@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sign Language AI</title>
+
+<link rel="stylesheet" href="/static/style.css">
+
+</head>
+
+
+<body>
+
+<!-- TOP HEADER -->
+<div class="top-bar">
+
+    <div class="project-name">
+        Sign Language AI
+    </div>
+
+    <div class="nav-bar">
+        Dashboard | History | Settings
+    </div>
+
+</div>
+
+
+<!-- MAIN CONTAINER -->
+<div class="main-container">
+
+
+    <!-- CAMERA PANEL -->
+    <div class="camera-panel">
+
+        <h2>Camera</h2>
+
+        <div class="camera-box">
+
+            <img id="camera" src="">
+
+        </div>
+
+    </div>
+
+
+
+    <!-- RIGHT SIDE -->
+    <div class="right-panel">
+
+
+        <!-- CONTROL BUTTONS -->
+        <div class="controls">
+
+            <button onclick="startCam()">Start Camera</button>
+
+            <button onclick="stopCam()">Stop Camera</button>
+
+            <button onclick="showText()">Show Text</button>
+
+            <button onclick="readText()">Read Text</button>
+
+            <button onclick="newConversation()">New Conversation</button>
+
+        </div>
+
+
+
+        <!-- TEXT OUTPUT -->
+        <div class="text-panel">
+
+            <h2>Detected Text</h2>
+
+            <div id="output"></div>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<script src="/static/script.js"></script>
+
+</body>
+
+</html>

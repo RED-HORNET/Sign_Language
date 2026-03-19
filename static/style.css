@@ -1,0 +1,166 @@
+body{
+margin:0;
+font-family:Arial, Helvetica, sans-serif;
+background:#e5e8ee;
+}
+
+.top-bar{
+display:flex;
+align-items:center;
+gap:40px;
+padding:20px 40px;
+}
+
+.project-name{
+background:#888;
+padding:15px 30px;
+border-radius:30px;
+color:white;
+font-weight:bold;
+}
+
+.nav-bar{
+background:#888;
+padding:15px 120px;
+border-radius:30px;
+color:white;
+}
+
+.main-container{
+display:flex;
+gap:60px;
+padding:40px;
+}
+
+.camera-panel{
+width:400px;
+background:#f3f3f3;
+padding:20px;
+border-radius:20px;
+}
+
+.camera-box{
+background:black;
+height:350px;
+border-radius:12px;
+display:flex;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+}
+
+#camera{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.right-panel{
+flex:1;
+}
+
+.controls{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:25px;
+margin-bottom:40px;
+}
+
+.controls button{
+
+padding:14px;
+border:none;
+border-radius:20px;
+background:linear-gradient(135deg,#f7b267,#f25f5c);
+color:white;
+font-size:16px;
+cursor:pointer;
+
+box-shadow:0 5px 12px rgba(0,0,0,0.2);
+
+}
+
+.controls button:hover{
+transform:scale(1.05);
+}
+
+.text-panel{
+background:#f3f3f3;
+padding:30px;
+border-radius:25px;
+}
+
+#output{
+margin-top:10px;
+font-size:18px;
+white-space:pre-line;
+}
+function startCam(){
+
+let cam=document.getElementById("camera")
+
+cam.src="/video"
+
+}
+
+
+function stopCam(){
+
+fetch("/stop_camera")
+
+let cam=document.getElementById("camera")
+
+cam.src=""
+
+}
+
+
+function showText(){
+
+fetch("/get_text")
+.then(res=>res.json())
+.then(data=>{
+
+document.getElementById("output").innerText=data.text
+
+})
+
+}
+
+
+function readText(){
+
+let text=document.getElementById("output").innerText
+
+let speech=new SpeechSynthesisUtterance(text)
+
+speechSynthesis.speak(speech)
+
+}
+
+
+function newConversation(){
+
+fetch("/clear_text")
+
+document.getElementById("output").innerText=""
+
+}
+
+
+.camera-box{
+border:4px solid transparent;
+border-radius:15px;
+transition:0.3s;
+}
+
+.camera-box.active{
+
+border:4px solid #00ff88;
+
+box-shadow:
+0 0 10px #00ff88,
+0 0 20px #00ff88,
+0 0 40px #00ff88;
+
+}
