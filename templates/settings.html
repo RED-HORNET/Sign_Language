@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Language AI — Settings</title>
+    <meta name="description" content="Configure language, theme, and speech preferences for Sign Language AI">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+</div>
+
+<header class="top-bar">
+    <div class="branding">
+        <span class="material-icons logo-icon">sign_language</span>
+        <span class="project-name">Sign Language AI</span>
+        <span class="version-badge">v2.0</span>
+    </div>
+    <nav class="nav-bar">
+        <a href="/" id="navDash"><span class="material-icons">dashboard</span> Dashboard</a>
+        <a href="#"><span class="material-icons">history</span> History</a>
+        <a href="/settings" class="active"><span class="material-icons">settings</span> Settings</a>
+    </nav>
+    <div class="header-actions">
+        <button class="icon-btn" onclick="toggleTheme()" title="Toggle Theme" id="themeToggleBtn">
+            <span class="material-icons" id="themeIcon">dark_mode</span>
+        </button>
+    </div>
+</header>
+
+<main class="main-container center-aligned">
+    <section class="settings-panel card">
+        <div class="card-header">
+            <h2><span class="material-icons">tune</span> Preferences</h2>
+        </div>
+
+        <!-- Theme -->
+        <div class="setting-item">
+            <label for="themeSelect"><span class="material-icons">brightness_medium</span> Theme</label>
+            <select id="themeSelect" onchange="saveSettings()">
+                <option value="light">☀️ Light Mode</option>
+                <option value="dark">🌙 Dark Mode</option>
+            </select>
+            <p class="help-text">Color scheme is automatically matched to your OS preference on first visit.</p>
+        </div>
+
+        <!-- Spoken / TTS Language -->
+        <div class="setting-item">
+            <label for="languageSelect"><span class="material-icons">language</span> TTS Spoken Language</label>
+            <select id="languageSelect" onchange="saveSettings()">
+                <option value="en">🇺🇸 English (Default)</option>
+                <option value="hi">🇮🇳 Hindi (हिंदी)</option>
+                <option value="bn">🇧🇩 Bangla (বাংলা)</option>
+                <option value="or">🇮🇳 Odia (ଓଡ଼ିଆ)</option>
+                <option value="ta">🇮🇳 Tamil (தமிழ்)</option>
+                <option value="te">🇮🇳 Telugu (తెలుగు)</option>
+                <option value="kn">🇮🇳 Kannada (ಕನ್ನಡ)</option>
+                <option value="mr">🇮🇳 Marathi (मराठी)</option>
+                <option value="gu">🇮🇳 Gujarati (ગુજરાતી)</option>
+                <option value="ml">🇮🇳 Malayalam (മലയാളം)</option>
+                <option value="ur">🇵🇰 Urdu (اردو)</option>
+                <option value="pa">🇮🇳 Punjabi (ਪੰਜਾਬੀ)</option>
+                <option value="es">🇪🇸 Spanish (Español)</option>
+                <option value="fr">🇫🇷 French (Français)</option>
+                <option value="de">🇩🇪 German (Deutsch)</option>
+                <option value="ar">🇸🇦 Arabic (العربية)</option>
+                <option value="zh">🇨🇳 Chinese (中文)</option>
+                <option value="ja">🇯🇵 Japanese (日本語)</option>
+                <option value="ru">🇷🇺 Russian (Русский)</option>
+                <option value="pt">🇧🇷 Portuguese (Português)</option>
+            </select>
+            <p class="help-text">When you click "Speak", detected text is translated to this language first using the MyMemory AI translation API.</p>
+        </div>
+
+        <!-- TTS Speed -->
+        <div class="setting-item">
+            <label for="ttsRate"><span class="material-icons">speed</span> Speech Speed</label>
+            <select id="ttsRate" onchange="saveTtsRate()">
+                <option value="0.6">🐢 Slow (0.6×)</option>
+                <option value="0.8">🚶 Gentle (0.8×)</option>
+                <option value="1.0" selected>⚡ Normal (1.0×)</option>
+                <option value="1.3">🚀 Fast (1.3×)</option>
+                <option value="1.6">🔥 Very Fast (1.6×)</option>
+            </select>
+            <p class="help-text">Controls how fast the text-to-speech voice speaks.</p>
+        </div>
+
+        <!-- Translation info -->
+        <div class="setting-item" style="background:rgba(102,126,234,0.06); padding:18px; border-radius:14px; border:1px solid rgba(102,126,234,0.15);">
+            <label style="color: #667eea; font-weight:600; gap:10px; display:flex; align-items:center;">
+                <span class="material-icons" style="color:#667eea;">g_translate</span> Live Translation
+            </label>
+            <p class="help-text" style="margin-top:8px; font-size:14px; line-height:1.6;">
+                The <strong>Translate To</strong> dropdown in the dashboard header enables <strong>real-time translation</strong> of detected sign language text into 20 languages.
+                Uses the free <em>MyMemory Translation API</em> — no API key required.
+                <br><br>
+                ✅ Supports: Hindi, Bangla, Odia, Tamil, Telugu, Kannada, Marathi, Gujarati, Malayalam, Urdu, Punjabi, Spanish, French, German, Arabic, Chinese, Japanese, Russian, Portuguese.
+            </p>
+        </div>
+
+    </section>
+</main>
+
+<div id="toastContainer" class="toast-container"></div>
+
+<script src="/static/script.js?v=3"></script>
+<script>
+    // Load TTS rate setting on page load
+    document.addEventListener("DOMContentLoaded", () => {
+        const rateEl = document.getElementById("ttsRate");
+        if (rateEl) rateEl.value = localStorage.getItem("ttsRate") || "1";
+    });
+    function saveTtsRate() {
+        const r = document.getElementById("ttsRate");
+        if (r) { localStorage.setItem("ttsRate", r.value); showToast("Speech speed updated", "success"); }
+    }
+</script>
+</body>
+</html>

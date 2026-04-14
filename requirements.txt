@@ -1,4 +1,9 @@
+Flask
 opencv-python
 mediapipe==0.10.9
 numpy
 scikit-learn
+PyJWT
+mysql-connector-python
+bcrypt
+pyttsx3

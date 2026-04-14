@@ -1,91 +1,256 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Sign Language AI</title>
-
-<link rel="stylesheet" href="/static/style.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Language AI — Real-Time Interpreter</title>
+    <meta name="description" content="AI-powered real-time sign language recognition with live translation to 20+ languages">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
-
-
 <body>
 
-<!-- TOP HEADER -->
-<div class="top-bar">
-
-    <div class="project-name">
-        Sign Language AI
-    </div>
-
-    <div class="nav-bar">
-        Dashboard | History | Settings
-    </div>
-
+<!-- Ambient Animated Background Orbs -->
+<div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
 </div>
 
-
-<!-- MAIN CONTAINER -->
-<div class="main-container">
-
-
-    <!-- CAMERA PANEL -->
-    <div class="camera-panel">
-
-        <h2>Camera</h2>
-
-        <div class="camera-box">
-
-            <img id="camera" src="">
-
-        </div>
-
+<!-- ── Header ──────────────────────────────────────────────────── -->
+<header class="top-bar">
+    <div class="branding">
+        <span class="material-icons logo-icon">sign_language</span>
+        <span class="project-name">Sign Language AI</span>
+        <span class="version-badge">v2.0</span>
     </div>
-
-
-
-    <!-- RIGHT SIDE -->
-    <div class="right-panel">
-
-
-        <!-- CONTROL BUTTONS -->
-        <div class="controls">
-
-            <button onclick="startCam()">Start Camera</button>
-
-            <button onclick="stopCam()">Stop Camera</button>
-
-            <button onclick="showText()">Show Text</button>
-
-            <button onclick="readText()">Read Text</button>
-
-            <button onclick="newConversation()">New Conversation</button>
-
-        </div>
-
-
-
-        <!-- TEXT OUTPUT -->
-        <div class="text-panel">
-
-            <h2>Detected Text</h2>
-
-            <div id="output"></div>
-
-        </div>
-
-
+    <nav class="nav-bar">
+        <a href="/" class="active" id="navDash"><span class="material-icons">dashboard</span> Dashboard</a>
+        <a href="#" id="navHistory"><span class="material-icons">history</span> History</a>
+        <a href="/settings" id="navSettings"><span class="material-icons">settings</span> Settings</a>
+    </nav>
+    <div class="header-actions">
+        <button class="icon-btn" onclick="toggleTheme()" title="Toggle Theme" id="themeToggleBtn">
+            <span class="material-icons" id="themeIcon">dark_mode</span>
+        </button>
     </div>
+</header>
 
-
+<!-- ── Stats Ribbon ────────────────────────────────────────────── -->
+<div class="stats-ribbon">
+    <div class="stat-chip" id="timerChip">
+        <span class="material-icons stat-icon">timer</span>
+        <div class="stat-content">
+            <span class="stat-value" id="sessionTimer">00:00</span>
+            <span class="stat-label">Session</span>
+        </div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-chip">
+        <span class="material-icons stat-icon">spellcheck</span>
+        <div class="stat-content">
+            <span class="stat-value" id="wordCountStat">0</span>
+            <span class="stat-label">Words</span>
+        </div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-chip" id="handStatusChip">
+        <span class="material-icons stat-icon" id="handIcon">back_hand</span>
+        <div class="stat-content">
+            <span class="stat-value" id="handStatusText">Idle</span>
+            <span class="stat-label">Hand Status</span>
+        </div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-chip lang-switcher-chip">
+        <span class="material-icons stat-icon">translate</span>
+        <div class="stat-content">
+            <select id="quickLangSelect" onchange="onQuickLangChange()" class="quick-lang-select">
+                <option value="none">No Translation</option>
+                <option value="hi">🇮🇳 Hindi</option>
+                <option value="bn">🇧🇩 Bangla</option>
+                <option value="or">🇮🇳 Odia</option>
+                <option value="ta">🇮🇳 Tamil</option>
+                <option value="te">🇮🇳 Telugu</option>
+                <option value="kn">🇮🇳 Kannada</option>
+                <option value="mr">🇮🇳 Marathi</option>
+                <option value="gu">🇮🇳 Gujarati</option>
+                <option value="ml">🇮🇳 Malayalam</option>
+                <option value="ur">🇵🇰 Urdu</option>
+                <option value="pa">🇮🇳 Punjabi</option>
+                <option value="es">🇪🇸 Spanish</option>
+                <option value="fr">🇫🇷 French</option>
+                <option value="de">🇩🇪 German</option>
+                <option value="ar">🇸🇦 Arabic</option>
+                <option value="zh">🇨🇳 Chinese</option>
+                <option value="ja">🇯🇵 Japanese</option>
+                <option value="ru">🇷🇺 Russian</option>
+                <option value="pt">🇧🇷 Portuguese</option>
+            </select>
+            <span class="stat-label">Translate To</span>
+        </div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-chip">
+        <span class="material-icons stat-icon" id="confStatIcon">psychology</span>
+        <div class="stat-content">
+            <span class="stat-value" id="confStatValue">—</span>
+            <span class="stat-label">Confidence</span>
+        </div>
+    </div>
 </div>
 
+<!-- ── Main Layout ─────────────────────────────────────────────── -->
+<main class="main-container">
 
-<script src="/static/script.js"></script>
+    <!-- Camera Panel -->
+    <section class="camera-panel card">
+        <div class="card-header">
+            <h2><span class="material-icons">videocam</span> Camera Input</h2>
+            <div class="live-badge" id="liveBadge">
+                <span class="live-dot"></span>
+                LIVE
+            </div>
+        </div>
 
+        <div class="camera-box" id="cameraBox">
+            <!-- Viewfinder corner brackets -->
+            <div class="corner-bracket tl"></div>
+            <div class="corner-bracket tr"></div>
+            <div class="corner-bracket bl"></div>
+            <div class="corner-bracket br"></div>
+            <!-- Scanning line (active when camera on) -->
+            <div class="scan-line" id="scanLine"></div>
+
+            <!-- Idle placeholder -->
+            <div class="camera-placeholder" id="cameraPlaceholder">
+                <div class="placeholder-wrapper">
+                    <div class="ph-icon-ring">
+                        <span class="material-icons ph-icon">videocam_off</span>
+                        <div class="ring ring-1"></div>
+                        <div class="ring ring-2"></div>
+                    </div>
+                    <p class="ph-text">Click <strong>Start Camera</strong> to begin sign detection</p>
+                    <div class="ph-hints">
+                        <span class="hint-chip">✋ Show your hand</span>
+                        <span class="hint-chip">💡 Good lighting</span>
+                        <span class="hint-chip">📐 Stay in frame</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading state -->
+            <div id="cameraLoader" class="loader-container" style="display: none;">
+                <span class="material-icons rotating-icon">sync</span>
+                <p>Initializing Camera...</p>
+            </div>
+
+            <!-- Camera feed -->
+            <img id="camera" src="" alt="Live camera feed" style="display: none;">
+        </div>
+
+        <!-- Confidence Bar -->
+        <div class="confidence-section">
+            <div class="conf-header">
+                <span class="conf-label"><span class="material-icons">psychology</span> Model Confidence</span>
+                <span class="conf-pct" id="confidenceValue">—</span>
+            </div>
+            <div class="confidence-track">
+                <div class="confidence-fill" id="confidenceFill" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- Tips below camera -->
+        <div class="camera-tips">
+            <span class="tip-item"><span class="material-icons">lightbulb</span> Hold sign still for 1 second to register</span>
+            <span class="tip-item"><span class="material-icons">wb_sunny</span> Ensure good lighting for best accuracy</span>
+        </div>
+    </section>
+
+    <!-- Right Panel -->
+    <section class="right-panel">
+
+        <!-- Controls -->
+        <div class="controls card">
+            <button class="btn-primary" id="startBtn" onclick="startCam()">
+                <span class="material-icons">play_arrow</span> Start
+            </button>
+            <button class="btn-secondary" id="stopBtn" onclick="stopCam()">
+                <span class="material-icons">stop</span> Stop
+            </button>
+            <button class="btn-primary" onclick="readText()" id="speakBtn">
+                <span class="material-icons">volume_up</span> Speak
+            </button>
+            <button class="btn-danger" onclick="newConversation()">
+                <span class="material-icons">delete_outline</span> Clear
+            </button>
+            <button class="btn-accent" onclick="copyToClipboard()" id="copyBtn">
+                <span class="material-icons">content_copy</span> Copy
+            </button>
+            <button class="btn-toggle" id="autoSpeakBtn" onclick="toggleAutoSpeak()">
+                <span class="material-icons">hearing_disabled</span> Auto OFF
+            </button>
+        </div>
+
+        <!-- Last Detected Word Spotlight -->
+        <div class="spotlight-card card">
+            <div class="card-header">
+                <h2><span class="material-icons">gesture</span> Detected Sign</h2>
+                <span class="conf-badge-pill" id="confBadgePill">—</span>
+            </div>
+            <div class="word-spotlight-display" id="wordSpotlight">
+                <span class="spotlight-placeholder">Waiting for gesture...</span>
+            </div>
+        </div>
+
+        <!-- Detected Text Output -->
+        <div class="text-panel card">
+            <div class="card-header">
+                <h2><span class="material-icons">translate</span> Detected Text</h2>
+                <span class="word-count-pill" id="wordCountBadge">0 words</span>
+            </div>
+            <div id="output" class="text-output-area"></div>
+            <div class="text-panel-footer">
+                <button class="btn-sm" onclick="downloadText()" title="Download as text file">
+                    <span class="material-icons">download</span> Download
+                </button>
+                <button class="btn-sm" onclick="shareWhatsApp()" title="Share via WhatsApp">
+                    <span class="material-icons">share</span> Share
+                </button>
+            </div>
+        </div>
+
+        <!-- Live Translation Panel (shown when language selected) -->
+        <div class="text-panel card translation-panel" id="translationPanel" style="display:none;">
+            <div class="card-header">
+                <h2><span class="material-icons">g_translate</span> Translation</h2>
+                <span class="lang-pill" id="translationLangLabel">—</span>
+            </div>
+            <div class="text-output-area translated-area" id="translatedOutput">
+                <span class="waiting-text">Translation will appear here...</span>
+            </div>
+            <div class="translation-footer">
+                <button class="btn-sm" onclick="speakTranslation()">
+                    <span class="material-icons">volume_up</span> Speak Translation
+                </button>
+                <button class="btn-sm" onclick="copyTranslation()">
+                    <span class="material-icons">content_copy</span> Copy
+                </button>
+            </div>
+        </div>
+
+    </section>
+</main>
+
+<!-- Toast Notification Container -->
+<div id="toastContainer" class="toast-container"></div>
+
+<!-- Particle Effect Container -->
+<div id="particleContainer" class="particle-container" aria-hidden="true"></div>
+
+<script src="/static/script.js?v=3"></script>
 </body>
-
 </html>

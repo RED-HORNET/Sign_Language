@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Language AI - Admin Login</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4facfe;
+            --secondary: #00f2fe;
+            --bg-color: #0b0d17;
+            --surface: rgba(20, 22, 30, 0.6);
+            --surface-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Outfit', sans-serif;
+            background: radial-gradient(circle at 15% 50%, rgba(76, 29, 149, 0.15), transparent 25%),
+                        radial-gradient(circle at 85% 30%, rgba(14, 165, 233, 0.15), transparent 25%),
+                        radial-gradient(circle at 50% 80%, rgba(236, 72, 153, 0.1), transparent 25%),
+                        var(--bg-color);
+            background-size: cover;
+            background-attachment: fixed;
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Ambient floating orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.6;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+        .orb-1 {
+            width: 300px; height: 300px;
+            background: rgba(79, 172, 254, 0.3);
+            top: 10%; left: 20%;
+        }
+        .orb-2 {
+            width: 400px; height: 400px;
+            background: rgba(168, 85, 247, 0.2);
+            bottom: 10%; right: 10%;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-50px) scale(1.1); }
+        }
+
+        .login-wrapper {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            z-index: 10;
+        }
+
+        .login-card {
+            background: var(--surface);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--surface-border);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transform: translateY(0);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .login-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-icon {
+            font-size: 48px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0 0 10px 0;
+            letter-spacing: -0.5px;
+        }
+
+        p.subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-top: 0;
+            margin-bottom: 35px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper .material-icons {
+            position: absolute;
+            left: 14px;
+            color: var(--text-secondary);
+            font-size: 20px;
+            transition: color 0.3s;
+            pointer-events: none;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 14px 14px 44px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: 'Outfit', sans-serif;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 0 4px rgba(79, 172, 254, 0.15);
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: #000;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Outfit', sans-serif;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 10px 20px -10px rgba(79, 172, 254, 0.6);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-login::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .btn-login:hover {
+            box-shadow: 0 15px 25px -10px rgba(79, 172, 254, 0.8);
+            transform: translateY(-2px);
+        }
+
+        .btn-login:hover::after {
+            opacity: 1;
+        }
+
+        .btn-login:active {
+            transform: scale(0.97);
+        }
+
+        .message {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #fca5a5;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            padding: 12px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+
+        .message.lockout {
+            color: #fbbf24;
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.25);
+            animation: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="logo-container">
+                <span class="material-icons logo-icon">admin_panel_settings</span>
+                <h2>Admin Access</h2>
+                <p class="subtitle">Enter your credentials to manage models</p>
+            </div>
+
+            <form method="POST" action="{{ url_for('login') }}">
+                <div class="input-group">
+                    <label for="username">Username</label>
+                    <div class="input-wrapper">
+                        <span class="material-icons">person</span>
+                        <input type="text" id="username" name="username" required autocomplete="username">
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <div class="input-wrapper">
+                        <span class="material-icons">lock</span>
+                        <input type="password" id="password" name="password" required autocomplete="current-password">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-login">
+                    <span>Login Securely</span>
+                    <span class="material-icons" style="font-size: 18px;">arrow_forward</span>
+                </button>
+            </form>
+
+            {% if message %}
+            <div class="message {% if lockout %}lockout{% endif %}">
+                <span class="material-icons" style="font-size: 18px;">{% if lockout %}lock{% else %}error_outline{% endif %}</span>
+                {{ message }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        // Dynamic focus effects for icons
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.previousElementSibling.style.color = 'var(--primary)';
+            });
+            input.addEventListener('blur', () => {
+                if(!input.value) {
+                    input.previousElementSibling.style.color = 'var(--text-secondary)';
+                }
+            });
+            
+            // On load, check if there's a saved value
+            if(input.value) {
+                input.previousElementSibling.style.color = 'var(--primary)';
+            }
+        });
+    </script>
+</body>
+</html>
